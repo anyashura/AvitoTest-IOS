@@ -28,5 +28,3 @@ struct Employee: Codable {
     }
 }
 
-
-//company.employees.sort(by: <)
