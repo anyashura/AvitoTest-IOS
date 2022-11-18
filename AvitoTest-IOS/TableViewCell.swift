@@ -10,37 +10,28 @@ import UIKit
 class TableViewCell: UITableViewCell {
     
     // MARK: - Properties
-//    var employee: Employee {
-//        didSet {
-//            nameLabel.text = employee.name
-//            phoneNumberLabel.text = employee.phoneNumber
-//            skillsLabel.text = employee.skills.joined(separator: ", ")
-//        }
-//    }
-    var profileImage = UIImageView()
+    
+    private var profileImage = UIImageView()
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textAlignment = .right
+        label.font = UIFont.systemFont(ofSize: 18)
         label.numberOfLines = 0
         return label
     }()
     
     private let phoneNumberLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .systemGray2
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textAlignment = .right
         label.numberOfLines = 0
         return label
     }()
     
     private let skillsLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .systemGray3
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textAlignment = .right
         label.numberOfLines = 0
         return label
     }()
@@ -51,8 +42,6 @@ class TableViewCell: UITableViewCell {
         addSubview(nameLabel)
         addSubview(phoneNumberLabel)
         addSubview(skillsLabel)
-        
-
     }
     
     // MARK: - Required init
