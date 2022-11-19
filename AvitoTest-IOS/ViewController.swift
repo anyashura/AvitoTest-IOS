@@ -13,6 +13,7 @@ final class ViewController: UIViewController {
 //    let urlString = "https://run.mocky.io/v3/1d1cb4ec-73db-4762-8c4b-0b8aa3cecd4c"
 //    let cellID = "cellTypeIdentifier"
     var employees = [Employee]()
+    let network = NetworkManager()
     
     private lazy var table: UITableView = {
         let tableView = UITableView()
@@ -25,16 +26,7 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerTable()
-        
-        self.loadData(url: Constants.urlString) { (result) in
-           switch result {
-           case .success(let data):
-               self.parse(jsonData: data)
-           case .failure(let error):
-               print(error)
-           }
-        }
-        print(employees)
+        network.getData(dataURL: URL(string: Constants.urlString)!)
     }
     
     // MARK: - Actions
@@ -50,35 +42,6 @@ final class ViewController: UIViewController {
         view.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
         
         self.table.reloadData()
-    }
-    
-    private func parse(jsonData: Data) -> [Employee] {
-        let decoder = JSONDecoder()
-        if let json = try? decoder.decode(Company.self, from: jsonData) {
-
-            employees = json.company.employees.sorted(by: { $0.name < $1.name })
-        
-        }
-        return employees
-    }
-    
-    private func loadData(url: String,
-                          completion: @escaping (Result<Data, Error>) -> Void) {
-        if let url = URL(string: url) {
-            
-//            let request = URLRequest(url: url)
-            let sessionDataTask = URLSession(configuration: .default).dataTask(with: url)
-            {
-                (data, response,error) in
-                if let data = data {
-                    completion(.success(data))
-                }
-                if let error = error {
-                    completion(.failure(error))
-                }
-            }
-            sessionDataTask.resume()
-        }
     }
 }
 
