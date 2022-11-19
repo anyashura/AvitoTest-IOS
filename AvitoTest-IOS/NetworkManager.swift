@@ -8,22 +8,25 @@
 import Foundation
 
 protocol CacheRepositoryProtocol {
-    //data from cache or not
+    // data from cache or not
     func getData(dataURL: URL)
-    //if no cache, download from URL
+    // if no cache, download from URL
     func downloadAndCacheData(dataURL: URL, completion: @escaping (Result<Data, Error>) -> Void)
-    //if cache exists, load from cache
+    // if cache exists, load from cache
     func loadDataFromCache(dataURL: URL) -> Company?
 //    func removeCache()
 }
 
 class NetworkManager: CacheRepositoryProtocol {
 
-    let cache = URLCache.shared
+    let cache: URLCache
+    init(memoryCapacity: Int, diskCapacity: Int, diskPath: String) {
+        cache = URLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: diskPath)
+    }
     let timeInterval = 3600
-    
-    //получаем данные из кэша или из интернета, парсим, очищаем кэш
-    
+
+    // получаем данные из кэша или из интернета, парсим, очищаем кэш
+
     func getData(dataURL: URL) {
 
         let request = URLRequest(url: dataURL)
@@ -41,10 +44,9 @@ class NetworkManager: CacheRepositoryProtocol {
             }
         }
     }
-    
-    func loadDataFromCache(dataURL: URL) ->  Company? {
+    func loadDataFromCache(dataURL: URL) -> Company? {
         let request = URLRequest(url: dataURL)
-        
+
         if let cacheResponse = URLCache.shared.cachedResponse(for: request) {
             if let parsingData = parse(jsonData: cacheResponse.data) {
                 return parsingData
@@ -53,14 +55,12 @@ class NetworkManager: CacheRepositoryProtocol {
         return nil
     }
 
-    
     func downloadAndCacheData(dataURL: URL, completion: @escaping (Result<Data, Error>) -> Void) {
          let request = URLRequest(url: dataURL)
-                     
+
          DispatchQueue.global().async {
-            let sessionDataTask = URLSession(configuration: .default).dataTask(with: dataURL)
-            {
-                (data, response,error) in
+            let sessionDataTask = URLSession(configuration: .default).dataTask(with: dataURL) {
+                (data, response, error) in
                 if let data = data {
                      let cachedData = CachedURLResponse(response: response!, data: data)
                      self.cache.storeCachedResponse(cachedData, for: request)
@@ -73,25 +73,23 @@ class NetworkManager: CacheRepositoryProtocol {
              sessionDataTask.resume()
          }
     }
-    
+
         func parse(jsonData: Data) -> Company? {
         let decoder = JSONDecoder()
         if let json = try? decoder.decode(Company.self, from: jsonData) {
-            print(json)
             return json
 //            employees = json.company.employees.sorted(by: { $0.name < $1.name })
         }
         return nil
     }
-                       
-//   func removeCache() {
-//       guard let url = URL(string: Constants.urlString) else { return }
-//       let request = URLRequest(url: url)
-//
-//       DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
-//           URLCache.shared.removeCachedResponse(for: request)
-//       }
-//   }
- 
+
+   func removeCache() {
+       guard let url = URL(string: Constants.urlString) else { return }
+       let request = URLRequest(url: url)
+
+       DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+           URLCache.shared.removeCachedResponse(for: request)
+       }
+   }
+
 }
-    

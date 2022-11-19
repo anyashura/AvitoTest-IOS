@@ -8,9 +8,9 @@
 import UIKit
 
 class TableViewCell: UITableViewCell {
-    
+
     // MARK: - Properties
-    
+
     private var profileImage = UIImageView()
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -19,7 +19,7 @@ class TableViewCell: UITableViewCell {
         label.numberOfLines = 0
         return label
     }()
-    
+
     private let phoneNumberLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray2
@@ -27,7 +27,7 @@ class TableViewCell: UITableViewCell {
         label.numberOfLines = 0
         return label
     }()
-    
+
     private let skillsLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray3
@@ -35,7 +35,7 @@ class TableViewCell: UITableViewCell {
         label.numberOfLines = 0
         return label
     }()
-    
+
     // MARK: - Override init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,24 +43,22 @@ class TableViewCell: UITableViewCell {
         addSubview(phoneNumberLabel)
         addSubview(skillsLabel)
     }
-    
+
     // MARK: - Required init
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Actions
-    func fillDataForEmployee(employee: Employee) {
+    func fillDataForEmployee(employee: Employees, indexPath: IndexPath) {
+
         profileImage.image = UIImage()
-        
-        nameLabel.text = employee.name
 
-        phoneNumberLabel.text = "Phone: " + employee.phoneNumber
+        nameLabel.text = employee.employees[indexPath.row].name
 
-        skillsLabel.text = "Skills: " + employee.skills.joined(separator: ", ")
+        phoneNumberLabel.text = "Phone: " + employee.employees[indexPath.row].phoneNumber
+
+        skillsLabel.text = "Skills: " + employee.employees[indexPath.row].skills.joined(separator: ", ")
     }
-    
-
-
 
 }
