@@ -7,11 +7,16 @@
 
 import UIKit
 
+enum Constants {
+    static let urlString = "https://run.mocky.io/v3/1d1cb4ec-73db-4762-8c4b-0b8aa3cecd4c"
+    static let cellID = "cellTypeIdentifier"
+}
+
 final class ViewController: UIViewController {
     
     // MARK: - Properties
-    let urlString = "https://run.mocky.io/v3/1d1cb4ec-73db-4762-8c4b-0b8aa3cecd4c"
-    let cellID = "cellTypeIdentifier"
+//    let urlString = "https://run.mocky.io/v3/1d1cb4ec-73db-4762-8c4b-0b8aa3cecd4c"
+//    let cellID = "cellTypeIdentifier"
     var employees = [Employee]()
     
     private lazy var table: UITableView = {
@@ -26,7 +31,7 @@ final class ViewController: UIViewController {
         super.viewDidLoad()
         registerTable()
         
-        self.loadData(url: urlString) { (result) in
+        self.loadData(url: Constants.urlString) { (result) in
            switch result {
            case .success(let data):
                self.parse(jsonData: data)
@@ -40,7 +45,7 @@ final class ViewController: UIViewController {
     // MARK: - Actions
     private func registerTable() {
         
-        table.register(TableViewCell.self, forCellReuseIdentifier: cellID)
+        table.register(TableViewCell.self, forCellReuseIdentifier: Constants.cellID)
         view.addSubview(table)
         table.translatesAutoresizingMaskIntoConstraints = false
         let horizontalConstraint = table.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -96,7 +101,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellID, for: indexPath) as! TableViewCell
 //        cell.fillDataForEmployee(employee: employees[indexPath.row])
 
         return cell
