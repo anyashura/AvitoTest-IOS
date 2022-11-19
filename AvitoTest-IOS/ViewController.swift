@@ -7,11 +7,6 @@
 
 import UIKit
 
-enum Constants {
-    static let urlString = "https://run.mocky.io/v3/1d1cb4ec-73db-4762-8c4b-0b8aa3cecd4c"
-    static let cellID = "cellTypeIdentifier"
-}
-
 final class ViewController: UIViewController {
     
     // MARK: - Properties
@@ -85,32 +80,5 @@ final class ViewController: UIViewController {
             sessionDataTask.resume()
         }
     }
-}
-
-extension ViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 110
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        1
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellID, for: indexPath) as! TableViewCell
-//        cell.fillDataForEmployee(employee: employees[indexPath.row])
-
-        return cell
-    }
-    
-    
-}
-
-extension ViewController: UITableViewDelegate {
-    
 }
 
