@@ -7,20 +7,20 @@
 
 import Foundation
 
-struct Company: Codable {
-    var company: Employees
+struct Response: Codable {
+    let company: Company
 }
 
-struct Employees: Codable {
-    var name: String
-    var employees: [Employee]
+struct Company: Codable {
+    let name: String
+    let employees: [Employee]
 }
 
 struct Employee: Codable {
-    var name: String
-    var phoneNumber: String
-    var skills: [String]
-
+    let name: String
+    let phoneNumber: String
+    let skills: [String]
+            
     enum CodingKeys: String, CodingKey {
         case name
         case phoneNumber = "phone_number"

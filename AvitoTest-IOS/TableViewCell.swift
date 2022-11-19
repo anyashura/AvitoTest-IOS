@@ -12,10 +12,12 @@ class TableViewCell: UITableViewCell {
     // MARK: - Properties
 
     private var profileImage = UIImageView()
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
         return label
     }()
@@ -23,7 +25,8 @@ class TableViewCell: UITableViewCell {
     private let phoneNumberLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray2
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 12)
         label.numberOfLines = 0
         return label
     }()
@@ -31,7 +34,8 @@ class TableViewCell: UITableViewCell {
     private let skillsLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray3
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 12)
         label.numberOfLines = 0
         return label
     }()
@@ -39,9 +43,14 @@ class TableViewCell: UITableViewCell {
     // MARK: - Override init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(nameLabel)
-        addSubview(phoneNumberLabel)
-        addSubview(skillsLabel)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(phoneNumberLabel)
+        contentView.addSubview(skillsLabel)
+        
+
+        let widthConstraint = nameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+        let heightConstraint = nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        addConstraints([widthConstraint, heightConstraint])
     }
 
     // MARK: - Required init
@@ -50,15 +59,12 @@ class TableViewCell: UITableViewCell {
     }
 
     // MARK: - Actions
-    func fillDataForEmployee(employee: Employees, indexPath: IndexPath) {
-
+    func fillData(for employee: Employee) {
+        
         profileImage.image = UIImage()
-
-        nameLabel.text = employee.employees[indexPath.row].name
-
-        phoneNumberLabel.text = "Phone: " + employee.employees[indexPath.row].phoneNumber
-
-        skillsLabel.text = "Skills: " + employee.employees[indexPath.row].skills.joined(separator: ", ")
+        nameLabel.text = "Name: " + employee.name
+        phoneNumberLabel.text = "Phone: " + employee.phoneNumber
+        skillsLabel.text = "Skills: " + employee.skills.joined(separator: ", ")
     }
-
+    
 }

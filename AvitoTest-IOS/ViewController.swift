@@ -13,6 +13,7 @@ final class ViewController: UIViewController {
 
     let network = NetworkManager(memoryCapacity: Constants.memoryCapacity, diskCapacity: Constants.diskCapacity, diskPath: Constants.diskPath)
     var employees = [Employee]()
+    var companyName = ""
 
     private lazy var table: UITableView = {
         let tableView = UITableView()
@@ -21,12 +22,24 @@ final class ViewController: UIViewController {
         return tableView
     }()
 
-    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         registerTable()
-        network.getData(dataURL: URL(string: Constants.urlString)!)
-
+        // start loader
+        network.getData(dataURL: URL(string: Constants.urlString)!) { [weak self] result in
+            guard let self = self else { return }
+            // stop loader
+            switch result {
+            case let .success(company):
+                self.companyName = company.name
+                self.employees = company.employees.sorted(by: { $0.name < $1.name })
+                self.table.reloadData()
+            case let .failure(error):
+                // error
+                break
+            }
+        }
+        
     }
 
     // MARK: - Actions
@@ -44,3 +57,32 @@ final class ViewController: UIViewController {
         self.table.reloadData()
     }
 }
+
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        employees.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+       return "Company: \(companyName)"
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellID, for: indexPath) as! TableViewCell
+        cell.fillData(for: employees[indexPath.row])
+
+        return cell
+    }
+
+
+}
+
+extension ViewController: UITableViewDelegate { }
