@@ -14,26 +14,25 @@ protocol CacheRepositoryProtocol {
     func downloadAndCacheData(dataURL: URL, completion: @escaping (Result<Data, NetworkErrors>) -> Void)
     // if cache exists, load from cache
     func loadDataFromCache(dataURL: URL) -> Company?
-//    func removeCache()
+    func removeCache()
 }
 
 class NetworkManager: CacheRepositoryProtocol {
-
+    // MARK: - Properties
     private let cache: URLCache
+    // MARK: - Init
     init(memoryCapacity: Int, diskCapacity: Int, diskPath: String) {
         cache = URLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: diskPath)
     }
 
-    // получаем данные из кэша или из интернета, парсим, очищаем кэш
-
+    // MARK: - Actions
     func getData(dataURL: URL, completion: @escaping (Result<Company, Error>) -> Void) {
-
         let request = URLRequest(url: dataURL)
         if self.cache.cachedResponse(for: request) != nil {
             if let company = loadDataFromCache(dataURL: dataURL) {
                 completion(.success(company))
             } else {
-                // error
+                completion(.failure(NetworkErrors.invalidData))
             }
         } else {
             downloadAndCacheData(dataURL: dataURL) { (result) in
@@ -42,10 +41,10 @@ class NetworkManager: CacheRepositoryProtocol {
                    if let company = self.parse(jsonData: data) {
                        completion(.success(company))
                    } else {
-                       // error
+                       completion(.failure(NetworkErrors.decodingError))
                    }
-               case .failure(let error):
-                   completion(.failure(error))
+               case .failure:
+                   completion(.failure(NetworkErrors.invalidData))
                }
             }
         }
@@ -53,7 +52,6 @@ class NetworkManager: CacheRepositoryProtocol {
 
     func loadDataFromCache(dataURL: URL) -> Company? {
         let request = URLRequest(url: dataURL)
-
         if let cacheResponse = URLCache.shared.cachedResponse(for: request) {
             if let parsingData = parse(jsonData: cacheResponse.data) {
                 return parsingData
@@ -64,7 +62,6 @@ class NetworkManager: CacheRepositoryProtocol {
 
     func downloadAndCacheData(dataURL: URL, completion: @escaping (Result<Data, NetworkErrors>) -> Void) {
          let request = URLRequest(url: dataURL)
-
          DispatchQueue.global().async {
             let sessionDataTask = URLSession(configuration: .default).dataTask(with: dataURL) {
                 (data, response, error) in
@@ -74,7 +71,7 @@ class NetworkManager: CacheRepositoryProtocol {
                     self.removeCache()
                     completion(.success(data))
                 }
-                if let error = error {
+                if error != nil {
                  completion(.failure(.invalidData))
                 }
              }
@@ -82,22 +79,23 @@ class NetworkManager: CacheRepositoryProtocol {
          }
     }
 
-    private func parse(jsonData: Data) -> Company? {
-        let decoder = JSONDecoder()
-        if let response = try? decoder.decode(Response.self, from: jsonData) {
-            return response.company
-        }
-        return nil
-    }
-
-    private func removeCache() {
+    func removeCache() {
        guard let url = URL(string: Constants.urlString) else { return }
        let request = URLRequest(url: url)
        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Constants.timeInterval)) {
            self.cache.removeCachedResponse(for: request)
-           self.cache.removeAllCachedResponses()
-
+//           self.cache.removeAllCachedResponses()
        }
    }
+
+    private func parse(jsonData: Data) -> Company? {
+        let decoder = JSONDecoder()
+        if let response = try? decoder.decode(Response.self, from: jsonData) {
+            return response.company
+        } else {
+            print(NetworkErrors.decodingError)
+            return nil
+        }
+    }
 
 }

@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import Network
 
 final class ViewController: UIViewController {
 
     // MARK: - Properties
-
     let network = NetworkManager(memoryCapacity: Constants.memoryCapacity, diskCapacity: Constants.diskCapacity, diskPath: Constants.diskPath)
     var employees = [Employee]()
     var companyName = ""
+    let monitor = NWPathMonitor()
 
     private lazy var table: UITableView = {
         let tableView = UITableView()
@@ -24,28 +25,31 @@ final class ViewController: UIViewController {
         return tableView
     }()
 
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         registerTable()
+
         // start loader
         network.getData(dataURL: URL(string: Constants.urlString)!) { [weak self] result in
             guard let self = self else { return }
             // stop loader
             switch result {
-            case let .success(company):
-                self.companyName = company.name
-                self.employees = company.employees.sorted(by: { $0.name < $1.name })
-                DispatchQueue.main.async {
-                    self.table.reloadData()
-                }
-            case let .failure(error):
-                // error
-                break
+                case let .success(company):
+                    self.companyName = company.name
+                    self.employees = company.employees.sorted(by: { $0.name < $1.name })
+                    DispatchQueue.main.async {
+                        self.table.reloadData()
+                    }
+                case .failure:
+                    print(NetworkErrors.invalidData)
+                    break
             }
         }
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        checkConnection()
         let loader = self.loader()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.stopLoader(loader: loader)
@@ -67,9 +71,22 @@ final class ViewController: UIViewController {
 
         self.table.reloadData()
     }
+
+    private func checkConnection() {
+        if Reachability.isConnectedToNetwork() == true {
+            print("Internet connection OK")
+        } else {
+            print("Internet connection FAILED")
+            let alert = UIAlertController(title: "Warning", message: "No internet connection", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true)
+        }
+    }
 }
 
-extension ViewController: UITableViewDataSource {
+// MARK: - Extensions
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         employees.count
     }
@@ -87,16 +104,13 @@ extension ViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellID, for: indexPath) as! TableViewCell
-        cell.fillData(for: employees[indexPath.row])
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellID, for: indexPath) as? TableViewCell
+        cell?.fillData(for: employees[indexPath.row])
 
-        return cell
+        return cell ?? UITableViewCell()
     }
 
 }
-
-extension ViewController: UITableViewDelegate { }
-
 
 extension ViewController {
     func loader() -> UIAlertController {
@@ -116,3 +130,14 @@ extension ViewController {
         }
     }
 }
+
+extension ViewController {
+    func showAllertError() -> UIAlertController {
+        let alert = UIAlertController(title: "Warning", message: "Something is wrong", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        return alert
+    }
+}
+

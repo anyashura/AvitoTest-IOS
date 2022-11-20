@@ -17,6 +17,7 @@
 		B58F7A7C292580CB00833767 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58F7A7B292580CB00833767 /* NetworkManager.swift */; };
 		B58F7A862929618100833767 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58F7A852929618100833767 /* Constants.swift */; };
 		B58F7A8929296B3900833767 /* NetworkErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58F7A8829296B3900833767 /* NetworkErrors.swift */; };
+		B5CE634B292A871C000CB7E1 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CE634A292A871C000CB7E1 /* NetworkMonitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		B58F7A7B292580CB00833767 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		B58F7A852929618100833767 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B58F7A8829296B3900833767 /* NetworkErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrors.swift; sourceTree = "<group>"; };
+		B5CE634A292A871C000CB7E1 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,11 +69,12 @@
 				B58F7A6329255D7800833767 /* AppDelegate.swift */,
 				B58F7A6529255D7800833767 /* SceneDelegate.swift */,
 				B58F7A6729255D7800833767 /* ViewController.swift */,
+				B5CE634A292A871C000CB7E1 /* NetworkMonitor.swift */,
+				B58F7A7B292580CB00833767 /* NetworkManager.swift */,
 				B58F7A8829296B3900833767 /* NetworkErrors.swift */,
 				B58F7A852929618100833767 /* Constants.swift */,
 				B58F7A79292564B800833767 /* TableViewCell.swift */,
 				B58F7A77292561EB00833767 /* Model.swift */,
-				B58F7A7B292580CB00833767 /* NetworkManager.swift */,
 				B58F7A6C29255D7800833767 /* Assets.xcassets */,
 				B58F7A6E29255D7800833767 /* LaunchScreen.storyboard */,
 				B58F7A7129255D7800833767 /* Info.plist */,
@@ -178,6 +181,7 @@
 				B58F7A7C292580CB00833767 /* NetworkManager.swift in Sources */,
 				B58F7A78292561EB00833767 /* Model.swift in Sources */,
 				B58F7A862929618100833767 /* Constants.swift in Sources */,
+				B5CE634B292A871C000CB7E1 /* NetworkMonitor.swift in Sources */,
 				B58F7A8929296B3900833767 /* NetworkErrors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

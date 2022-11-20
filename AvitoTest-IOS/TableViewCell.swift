@@ -10,7 +10,6 @@ import UIKit
 class TableViewCell: UITableViewCell {
 
     // MARK: - Properties
-
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
