@@ -19,6 +19,8 @@ final class ViewController: UIViewController {
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.allowsSelection = false
+        tableView.backgroundColor = .white
         return tableView
     }()
 
@@ -48,6 +50,7 @@ final class ViewController: UIViewController {
         table.register(TableViewCell.self, forCellReuseIdentifier: Constants.cellID)
         view.addSubview(table)
         table.translatesAutoresizingMaskIntoConstraints = false
+        
         let horizontalConstraint = table.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let verticalConstraint = table.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         let widthConstraint = table.widthAnchor.constraint(equalToConstant: view.bounds.width)
