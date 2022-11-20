@@ -19,18 +19,16 @@ protocol CacheRepositoryProtocol {
 
 class NetworkManager: CacheRepositoryProtocol {
 
-    let cache: URLCache
+    private let cache: URLCache
     init(memoryCapacity: Int, diskCapacity: Int, diskPath: String) {
         cache = URLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: diskPath)
     }
-    let timeInterval = 3600
-    
-    //получаем данные из кэша или из интернета, парсим, очищаем кэш
-    
+
+    // получаем данные из кэша или из интернета, парсим, очищаем кэш
+
     func getData(dataURL: URL, completion: @escaping (Result<Company, Error>) -> Void) {
 
         let request = URLRequest(url: dataURL)
-
         if self.cache.cachedResponse(for: request) != nil {
             if let company = loadDataFromCache(dataURL: dataURL) {
                 completion(.success(company))
@@ -52,7 +50,7 @@ class NetworkManager: CacheRepositoryProtocol {
             }
         }
     }
-    
+
     func loadDataFromCache(dataURL: URL) -> Company? {
         let request = URLRequest(url: dataURL)
 
@@ -71,34 +69,35 @@ class NetworkManager: CacheRepositoryProtocol {
             let sessionDataTask = URLSession(configuration: .default).dataTask(with: dataURL) {
                 (data, response, error) in
                 if let data = data {
-                     let cachedData = CachedURLResponse(response: response!, data: data)
-                     self.cache.storeCachedResponse(cachedData, for: request)
+                    let cachedData = CachedURLResponse(response: response!, data: data)
+                    self.cache.storeCachedResponse(cachedData, for: request)
+                    self.removeCache()
                     completion(.success(data))
                 }
-                 if let error = error {
-                     completion(.failure(.invalidData))
-                 }
+                if let error = error {
+                 completion(.failure(.invalidData))
+                }
              }
              sessionDataTask.resume()
          }
     }
 
-    func parse(jsonData: Data) -> Company? {
+    private func parse(jsonData: Data) -> Company? {
         let decoder = JSONDecoder()
         if let response = try? decoder.decode(Response.self, from: jsonData) {
             return response.company
-//            employees = json.company.employees.sorted(by: { $0.name < $1.name })
         }
         return nil
     }
-                       
-   func removeCache() {
+
+    private func removeCache() {
        guard let url = URL(string: Constants.urlString) else { return }
        let request = URLRequest(url: url)
+       DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Constants.timeInterval)) {
+           self.cache.removeCachedResponse(for: request)
+           self.cache.removeAllCachedResponses()
 
-       DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-           URLCache.shared.removeCachedResponse(for: request)
        }
    }
- 
+
 }

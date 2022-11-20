@@ -13,4 +13,5 @@ enum Constants {
     static let diskPath = "companyCache"
     static let memoryCapacity = 10 * 1024 * 1024
     static let diskCapacity = 10 * 1024 * 1024
+    static let timeInterval = 60 * 60
 }

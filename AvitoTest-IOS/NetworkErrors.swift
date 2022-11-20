@@ -8,9 +8,9 @@
 import Foundation
 
 enum NetworkErrors: String, Error {
-    
-    case invalidURL
-    case invalidData
-    case decodingError
 
+    case invalidURL = "Invalid URL"
+    case invalidData = "Invalid Data"
+    case decodingError = "Decoding Failed"
+    case noConnection = "No Internet Connection"
 }

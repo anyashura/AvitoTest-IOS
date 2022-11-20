@@ -35,13 +35,21 @@ final class ViewController: UIViewController {
             case let .success(company):
                 self.companyName = company.name
                 self.employees = company.employees.sorted(by: { $0.name < $1.name })
-                self.table.reloadData()
+                DispatchQueue.main.async {
+                    self.table.reloadData()
+                }
             case let .failure(error):
                 // error
                 break
             }
         }
-        
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        let loader = self.loader()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.stopLoader(loader: loader)
+        }
     }
 
     // MARK: - Actions
@@ -50,7 +58,7 @@ final class ViewController: UIViewController {
         table.register(TableViewCell.self, forCellReuseIdentifier: Constants.cellID)
         view.addSubview(table)
         table.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let horizontalConstraint = table.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let verticalConstraint = table.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         let widthConstraint = table.widthAnchor.constraint(equalToConstant: view.bounds.width)
@@ -73,9 +81,9 @@ extension ViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         1
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-       return "Company: \(companyName)"
+        "Company: \(companyName)"
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -85,7 +93,26 @@ extension ViewController: UITableViewDataSource {
         return cell
     }
 
-
 }
 
 extension ViewController: UITableViewDelegate { }
+
+
+extension ViewController {
+    func loader() -> UIAlertController {
+        let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
+        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.style = UIActivityIndicatorView.Style.large
+        loadingIndicator.startAnimating()
+        alert.view.addSubview(loadingIndicator)
+        present(alert, animated: true, completion: nil)
+        return alert
+    }
+
+    func stopLoader(loader: UIAlertController) {
+        DispatchQueue.main.async {
+            loader.dismiss(animated: true, completion: nil)
+        }
+    }
+}
