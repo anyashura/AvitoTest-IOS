@@ -101,7 +101,7 @@ final class ViewController: UIViewController {
             print("Internet connection OK")
         } else {
             print("Internet connection FAILED")
-            self.retryAlert()
+            self.showRetryAlert()
         }
     }
 }
@@ -161,7 +161,7 @@ private extension ViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-    private func retryAlert() {
+    private func showRetryAlert() {
         let retryAlert = UIAlertController(title: "Warning", message: "No internet", preferredStyle: UIAlertController.Style.alert)
         let action = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
         retryAlert.addAction(action)
