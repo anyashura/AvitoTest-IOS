@@ -136,22 +136,15 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 private extension ViewController {
 
     private func startLoader() {
-        view.addSubview(loadingView)
-        loadingView.addSubview(spinner)
-        loadingView.bounds = CGRect(x: 0.0, y: 0.0, width: 100.0, height: 100.0)
-        loadingView.center = self.view.center
-        loadingView.backgroundColor = .clear
-        loadingView.clipsToBounds = true
-        loadingView.layer.cornerRadius = 10
-        spinner.center = CGPoint(x: loadingView.bounds.size.width / 2, y: loadingView.bounds.size.height / 2)
+        view.addSubview(spinner)
+        spinner.center = self.table.center
         spinner.startAnimating()
-        view.bringSubviewToFront(loadingView)
+        view.bringSubviewToFront(spinner)
     }
 
     private func stopLoader() {
         spinner.stopAnimating()
         spinner.removeFromSuperview()
-        loadingView.removeFromSuperview()
     }
     
     private func showErrorAlert() {
