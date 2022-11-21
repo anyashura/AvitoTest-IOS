@@ -14,12 +14,12 @@ protocol CacheRepositoryProtocol {
     func downloadAndCacheData(dataURL: URL, completion: @escaping (Result<Data, NetworkErrors>) -> Void)
     // if cache exists, load from cache
     func loadDataFromCache(dataURL: URL) -> Company?
-    func removeCache()
 }
 
 class NetworkManager: CacheRepositoryProtocol {
     // MARK: - Properties
     private let cache: URLCache
+
     // MARK: - Init
     init(memoryCapacity: Int, diskCapacity: Int, diskPath: String) {
         cache = URLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: diskPath)
@@ -63,8 +63,7 @@ class NetworkManager: CacheRepositoryProtocol {
     func downloadAndCacheData(dataURL: URL, completion: @escaping (Result<Data, NetworkErrors>) -> Void) {
          let request = URLRequest(url: dataURL)
          DispatchQueue.global().async {
-            let sessionDataTask = URLSession(configuration: .default).dataTask(with: dataURL) {
-                (data, response, error) in
+            let sessionDataTask = URLSession(configuration: .default).dataTask(with: dataURL) {(data, response, error) in
                 if let data = data {
                     let cachedData = CachedURLResponse(response: response!, data: data)
                     self.cache.storeCachedResponse(cachedData, for: request)
@@ -79,12 +78,12 @@ class NetworkManager: CacheRepositoryProtocol {
          }
     }
 
-    func removeCache() {
+    private func removeCache() {
        guard let url = URL(string: Constants.urlString) else { return }
        let request = URLRequest(url: url)
-       DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Constants.timeInterval)) {
+       DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(Constants.timeInterval)) {
            self.cache.removeCachedResponse(for: request)
-//           self.cache.removeAllCachedResponses()
+           self.cache.removeAllCachedResponses()
        }
    }
 
@@ -97,5 +96,4 @@ class NetworkManager: CacheRepositoryProtocol {
             return nil
         }
     }
-
 }

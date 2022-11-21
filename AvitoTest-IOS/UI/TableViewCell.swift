@@ -9,6 +9,17 @@ import UIKit
 
 class TableViewCell: UITableViewCell {
 
+    // MARK: = Enums
+    private enum ConstantsForCell {
+        static let leadingInsetForCell = 4.0
+        static let trailingInsetForCell = -4.0
+        static let topInsetForCell = 2.0
+        static let bottomInsetForCell = -2.0
+        static let topInsetForNameLabel = 8.0
+        static let leadingInset = 16.0
+        static let trailingInset = -16.0
+        static let topInset = 5.0
+    }
     // MARK: - Properties
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -41,7 +52,7 @@ class TableViewCell: UITableViewCell {
     private var cellView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.borderColor = UIColor.gray.cgColor
+        view.layer.borderColor = UIColor.systemGray2.cgColor
         view.layer.borderWidth = 0.3
         view.layer.cornerRadius = 12
         return view
@@ -72,13 +83,13 @@ class TableViewCell: UITableViewCell {
         contentView.addSubview(cellView)
 
         let leadingConstraint = cellView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                                  constant: 4.0)
+                                                                  constant: ConstantsForCell.leadingInsetForCell)
         let trailingConstraint = cellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                                    constant: -4.0)
+                                                                    constant: ConstantsForCell.trailingInsetForCell)
         let topConstraint = cellView.topAnchor.constraint(equalTo: contentView.topAnchor,
-                                                          constant: 2.0)
+                                                          constant: ConstantsForCell.topInsetForCell)
         let bottomConstraint = cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                                                constant: -2.0)
+                                                                constant: ConstantsForCell.bottomInsetForCell)
         addConstraints([leadingConstraint, trailingConstraint, topConstraint, bottomConstraint])
     }
 
@@ -86,11 +97,11 @@ class TableViewCell: UITableViewCell {
         contentView.addSubview(nameLabel)
 
         let leadingConstraint = nameLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor,
-                                                                  constant: 16.0)
+                                                                   constant: ConstantsForCell.leadingInset)
         let trailingConstraint = nameLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor,
-                                                                    constant: 10.0)
+                                                                     constant: ConstantsForCell.trailingInset)
         let topConstraint = nameLabel.topAnchor.constraint(equalTo: cellView.topAnchor,
-                                                          constant: 8.0)
+                                                          constant: ConstantsForCell.topInsetForNameLabel)
 
         addConstraints([leadingConstraint, trailingConstraint, topConstraint])
     }
@@ -99,11 +110,11 @@ class TableViewCell: UITableViewCell {
         contentView.addSubview(phoneNumberLabel)
 
         let leadingConstraint = phoneNumberLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor,
-                                                                  constant: 16.0)
+                                                                  constant: ConstantsForCell.leadingInset)
         let trailingConstraint = phoneNumberLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor,
-                                                                    constant: 10.0)
+                                                                    constant: ConstantsForCell.trailingInset)
         let topConstraint = phoneNumberLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor,
-                                                          constant: 5.0)
+                                                                  constant: ConstantsForCell.topInset)
 
         addConstraints([leadingConstraint, trailingConstraint, topConstraint])
     }
@@ -112,13 +123,14 @@ class TableViewCell: UITableViewCell {
         contentView.addSubview(skillsLabel)
 
         let leadingConstraint = skillsLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor,
-                                                                  constant: 16.0)
+                                                                  constant: ConstantsForCell.leadingInset)
         let trailingConstraint = skillsLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor,
-                                                                    constant: 10.0)
+                                                                    constant: ConstantsForCell.trailingInset)
         let topConstraint = skillsLabel.topAnchor.constraint(equalTo: phoneNumberLabel.bottomAnchor,
-                                                          constant: 5.0)
+                                                          constant: ConstantsForCell.topInset)
 
         addConstraints([leadingConstraint, trailingConstraint, topConstraint])
     }
 
 }
+
