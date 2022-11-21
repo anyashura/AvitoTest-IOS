@@ -28,7 +28,6 @@ final class ViewController: UIViewController {
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
         registerAndConfigureTable()
         fillData()
     }
@@ -108,7 +107,6 @@ final class ViewController: UIViewController {
 }
 
 // MARK: - Extensions
-
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         employees.count

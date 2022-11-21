@@ -21,16 +21,12 @@ final class NetworkMonitor {
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
                 self.isConnected = true
-                print("Ok")
+                print("Internet is Ok")
             } else {
                 self.isConnected = false
                 print("No connection.")
             }
         }
-    }
-
-    public func stopMonitoring() {
-        monitor.cancel()
     }
 
 }

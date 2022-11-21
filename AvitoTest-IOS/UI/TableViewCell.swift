@@ -9,7 +9,7 @@ import UIKit
 
 class TableViewCell: UITableViewCell {
 
-    // MARK: = Enums
+    // MARK: - Enums
     private enum ConstantsForCell {
         static let leadingInsetForCell = 4.0
         static let trailingInsetForCell = -4.0
@@ -82,53 +82,76 @@ class TableViewCell: UITableViewCell {
     private func configureCellView() {
         contentView.addSubview(cellView)
 
-        let leadingConstraint = cellView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                                  constant: ConstantsForCell.leadingInsetForCell)
-        let trailingConstraint = cellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                                    constant: ConstantsForCell.trailingInsetForCell)
-        let topConstraint = cellView.topAnchor.constraint(equalTo: contentView.topAnchor,
-                                                          constant: ConstantsForCell.topInsetForCell)
-        let bottomConstraint = cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                                                constant: ConstantsForCell.bottomInsetForCell)
+        let leadingConstraint = cellView.leadingAnchor.constraint(
+            equalTo: contentView.leadingAnchor,
+            constant: ConstantsForCell.leadingInsetForCell
+        )
+        let trailingConstraint = cellView.trailingAnchor.constraint(
+            equalTo: contentView.trailingAnchor,
+            constant: ConstantsForCell.trailingInsetForCell
+        )
+        let topConstraint = cellView.topAnchor.constraint(
+            equalTo: contentView.topAnchor,
+            constant: ConstantsForCell.topInsetForCell
+        )
+        let bottomConstraint = cellView.bottomAnchor.constraint(
+            equalTo: contentView.bottomAnchor,
+            constant: ConstantsForCell.bottomInsetForCell
+        )
         addConstraints([leadingConstraint, trailingConstraint, topConstraint, bottomConstraint])
     }
 
     private func configureNameLabel() {
         contentView.addSubview(nameLabel)
 
-        let leadingConstraint = nameLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor,
-                                                                   constant: ConstantsForCell.leadingInset)
-        let trailingConstraint = nameLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor,
-                                                                     constant: ConstantsForCell.trailingInset)
-        let topConstraint = nameLabel.topAnchor.constraint(equalTo: cellView.topAnchor,
-                                                          constant: ConstantsForCell.topInsetForNameLabel)
-
+        let leadingConstraint = nameLabel.leadingAnchor.constraint(
+            equalTo: cellView.leadingAnchor,
+            constant: ConstantsForCell.leadingInset
+        )
+        let trailingConstraint = nameLabel.trailingAnchor.constraint(
+            equalTo: cellView.trailingAnchor,
+            constant: ConstantsForCell.trailingInset
+        )
+        let topConstraint = nameLabel.topAnchor.constraint(
+            equalTo: cellView.topAnchor,
+            constant: ConstantsForCell.topInsetForNameLabel
+        )
         addConstraints([leadingConstraint, trailingConstraint, topConstraint])
     }
 
     private func configurePhoneNumberLabel() {
         contentView.addSubview(phoneNumberLabel)
 
-        let leadingConstraint = phoneNumberLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor,
-                                                                  constant: ConstantsForCell.leadingInset)
-        let trailingConstraint = phoneNumberLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor,
-                                                                    constant: ConstantsForCell.trailingInset)
-        let topConstraint = phoneNumberLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor,
-                                                                  constant: ConstantsForCell.topInset)
-
+        let leadingConstraint = phoneNumberLabel.leadingAnchor.constraint(
+            equalTo: cellView.leadingAnchor,
+            constant: ConstantsForCell.leadingInset
+        )
+        let trailingConstraint = phoneNumberLabel.trailingAnchor.constraint(
+            equalTo: cellView.trailingAnchor,
+            constant: ConstantsForCell.trailingInset
+        )
+        let topConstraint = phoneNumberLabel.topAnchor.constraint(
+            equalTo: nameLabel.bottomAnchor,
+            constant: ConstantsForCell.topInset
+        )
         addConstraints([leadingConstraint, trailingConstraint, topConstraint])
     }
 
     private func configureSkillsLabel() {
         contentView.addSubview(skillsLabel)
 
-        let leadingConstraint = skillsLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor,
-                                                                  constant: ConstantsForCell.leadingInset)
-        let trailingConstraint = skillsLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor,
-                                                                    constant: ConstantsForCell.trailingInset)
-        let topConstraint = skillsLabel.topAnchor.constraint(equalTo: phoneNumberLabel.bottomAnchor,
-                                                          constant: ConstantsForCell.topInset)
-
+        let leadingConstraint = skillsLabel.leadingAnchor.constraint(
+            equalTo: cellView.leadingAnchor,
+            constant: ConstantsForCell.leadingInset
+        )
+        let trailingConstraint = skillsLabel.trailingAnchor.constraint(
+            equalTo: cellView.trailingAnchor,
+            constant: ConstantsForCell.trailingInset
+        )
+        let topConstraint = skillsLabel.topAnchor.constraint(
+            equalTo: phoneNumberLabel.bottomAnchor,
+            constant: ConstantsForCell.topInset
+        )
         addConstraints([leadingConstraint, trailingConstraint, topConstraint])
     }
 
