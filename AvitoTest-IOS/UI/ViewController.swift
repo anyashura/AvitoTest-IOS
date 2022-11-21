@@ -53,7 +53,7 @@ final class ViewController: UIViewController {
 
         pullToRefresh()
     }
-
+    
     private func getEmployeesAndUpdateTable(company: Company) {
         self.companyName = company.name
         self.employees = company.employees.sorted(by: { $0.name < $1.name })
@@ -61,6 +61,17 @@ final class ViewController: UIViewController {
             self.table.reloadData()
             self.table.refreshControl?.endRefreshing()
         }
+    }
+    
+    private func pullToRefresh() {
+        table.refreshControl = UIRefreshControl()
+        table.refreshControl?.addTarget(self, action: #selector(handleTopRefresh), for: .valueChanged)
+        table.refreshControl?.tintColor = UIColor.darkGray
+    }
+
+    @objc private func handleTopRefresh() {
+        checkConnection()
+        fillData()
     }
 
     private func fillData() {
@@ -85,17 +96,6 @@ final class ViewController: UIViewController {
         }
     }
 
-    private func pullToRefresh() {
-        table.refreshControl = UIRefreshControl()
-        table.refreshControl?.addTarget(self, action: #selector(handleTopRefresh), for: .valueChanged)
-        table.refreshControl?.tintColor = UIColor.darkGray
-    }
-
-    @objc private func handleTopRefresh() {
-        checkConnection()
-        fillData()
-    }
-
     private func checkConnection() {
         if NetworkMonitor.shared.isConnected {
             print("Internet connection OK")
@@ -108,6 +108,7 @@ final class ViewController: UIViewController {
 
 // MARK: - Extensions
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         employees.count
     }
@@ -132,7 +133,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension ViewController {
+private extension ViewController {
 
     private func startLoader() {
         view.addSubview(loadingView)

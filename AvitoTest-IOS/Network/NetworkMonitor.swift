@@ -10,11 +10,10 @@ import Network
 
 final class NetworkMonitor {
     static var shared = NetworkMonitor()
+    public var isConnected: Bool = false
 
     private var queue = DispatchQueue.global()
     private var monitor = NWPathMonitor()
-
-    public var isConnected: Bool = false
 
     public func startMonitoring() {
         monitor.start(queue: queue)
@@ -28,5 +27,4 @@ final class NetworkMonitor {
             }
         }
     }
-
 }
